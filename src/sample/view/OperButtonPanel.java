@@ -17,8 +17,7 @@ public class OperButtonPanel {
     private static final String AND = "∧";
     private static final String OR = "∨";
     private static final String NOT = "¬";
-    private static final String IMPLICATION ="→";
-    private static final String EQUIVALENCE = "≡";
+
     private static final String TRUE = "⊤";
     private static final String FALSE = "⊥";
     private static final String FIND = "определить";
@@ -46,8 +45,6 @@ public class OperButtonPanel {
         Button and = new Button(AND);
         Button or = new Button(OR);
         Button not  = new Button(NOT);
-        Button implication = new Button(IMPLICATION);
-        Button equal = new Button(EQUIVALENCE);
         Button tru = new Button(TRUE);
         Button fal = new Button(FALSE);
         Button find = new Button(FIND);
@@ -56,8 +53,6 @@ public class OperButtonPanel {
         and.setOnAction(andEventHandler);
         or.setOnAction(orEventHandler);
         not.setOnAction(notEventHandler);
-        implication.setOnAction(implicationEventHandler);
-        equal.setOnAction(equalEventHandler);
         tru.setOnAction(trueEventHandler);
         fal.setOnAction(falseEventHandler);
         find.setOnAction(findEventHandler);
@@ -65,8 +60,6 @@ public class OperButtonPanel {
         and.setStyle(BUTTON_STYLE);
         or.setStyle(BUTTON_STYLE);
         not.setStyle(BUTTON_STYLE);
-        implication.setStyle(BUTTON_STYLE);
-        equal.setStyle(BUTTON_STYLE);
         tru.setStyle(BUTTON_STYLE);
         fal.setStyle(BUTTON_STYLE);
         find.setStyle( "-fx-pref-width: 150; " +
@@ -76,12 +69,7 @@ public class OperButtonPanel {
         gridPane.add(and,0,0,1,1);
         gridPane.add(or,1,0,1,1);
         gridPane.add(not,2,0,1,1);
-       gridPane.add(implication,3,0,1,1);
-        gridPane.add(equal,4,0,1,1);
-        gridPane.add(tru,5,0,1,1);
-        gridPane.add(fal,6,0,1,1);
         gridPane.add(find,0,1,2,1);
-        GridPane.setMargin(implication, new Insets(15));
         GridPane.setMargin(or, new Insets(15));
         GridPane.setMargin(tru, new Insets(15));
 
@@ -95,12 +83,6 @@ public class OperButtonPanel {
     };
     private EventHandler<ActionEvent> notEventHandler = e -> {
         expRowTextField.setText(expRowTextField.getText() + NOT);
-    };
-    private EventHandler<ActionEvent> implicationEventHandler = e -> {
-        expRowTextField.setText(expRowTextField.getText() + IMPLICATION);
-    };
-    private EventHandler<ActionEvent> equalEventHandler = e -> {
-        expRowTextField.setText(expRowTextField.getText() + EQUIVALENCE);
     };
     private EventHandler<ActionEvent> trueEventHandler = e -> {
         expRowTextField.setText(expRowTextField.getText() + TRUE);

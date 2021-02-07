@@ -1,16 +1,19 @@
 package sample.parser.validation;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class Validator {
 
-    private final static Pattern SYMBOLS = Pattern.compile("([A-Z01≡∧∨()¬]|→)+");
+    private final static String SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01~∧∨()¬->";
 
 
     public static boolean isSymbolsCorrect(String expression){
-        Matcher matcher = SYMBOLS.matcher(expression);
-        return matcher.find();
+        boolean isCorrect = true;
+            for(Character character:expression.toCharArray()){
+                if (!SYMBOLS.contains(Character.toString(character))) {
+                    isCorrect = false;
+                    break;
+                }
+            }
+        return isCorrect;
     }
 
     public static boolean isBracketsCountCorrect(String expression){
