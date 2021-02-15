@@ -21,8 +21,8 @@ public class Form {
     private void configGridPane() {
         gridPane.setAlignment(Pos.CENTER);
 
-        gridPane.add(expressionRowPanel.getExpRowScrollPane(), 1, 0);
-        gridPane.add(operButtonPanel.getGridPane(), 1, 1);
+        gridPane.add(expressionRowPanel.getExpRowScrollPane(), 1, 0,2,1);
+        gridPane.add(operButtonPanel.getGridPane(), 1, 1,2,1);
 
     }
 

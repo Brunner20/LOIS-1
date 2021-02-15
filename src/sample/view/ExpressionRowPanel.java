@@ -35,7 +35,7 @@ public class ExpressionRowPanel {
         expressionRowTextField.setFocusTraversable(false);
         expressionRowTextField.setFont(new Font("Segoe UI", 18));
         expressionRowTextField.setPrefHeight(70);
-        expressionRowTextField.setPrefWidth(1000);
+        expressionRowTextField.setMinWidth(500);
 
         expressionRowTextField.textProperty().addListener(e -> {
             expressionRowTextField.positionCaret(expressionRowTextField.getText().length());
@@ -46,6 +46,6 @@ public class ExpressionRowPanel {
         expRowScrollPane.setContent(expressionRowTextField);
         expRowScrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
         expRowScrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        expRowScrollPane.setPrefWidth(100);
+        expRowScrollPane.setPrefWidth(300);
     }
 }

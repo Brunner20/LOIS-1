@@ -4,8 +4,6 @@ import sample.parser.exception.BracketNumberException;
 import sample.parser.exception.SymbolNotCorrectException;
 import sample.parser.validation.Validator;
 
-import java.util.regex.Pattern;
-
 public class ExpressionParser {
 
     private String expression;
@@ -13,9 +11,9 @@ public class ExpressionParser {
 
     private static final char OPENED = '(';
     private static final char CLOSED = ')';
-    private static final char AND = '∧';
-    private static final char OR = '∨';
-    private static final char NOT = '¬';
+    private static final char CLASH = '/'; // AND /\
+    private static final char BACKSLASH = '\\'; // OR \/
+    private static final char NOT = '!';
 
 
 
@@ -27,30 +25,39 @@ public class ExpressionParser {
     public boolean isDNF() throws BracketNumberException, SymbolNotCorrectException {
 
         if(!Validator.isBracketsCountCorrect(expression))
-            throw new BracketNumberException("не совпадает количество открывающих и закрывающих скобок");
+            isNDF=false;
+            //throw new BracketNumberException("не совпадает количество открывающих и закрывающих скобок");
         if(!Validator.isSymbolsCorrect(expression))
-            throw new SymbolNotCorrectException("некорректные символы");
+            isNDF= false;
+            //throw new SymbolNotCorrectException("некорректные символы");
 
         if(expression.contains("->")||expression.contains("~"))
              isNDF = false;
 
-        replaceInversion();
-        if(!replaceConjunct())
+        if(isNDF)
+        {
+            replaceInversion();
+            if(expression.contains("!")||!replaceConjunct())
              isNDF = false;
-        else isNDF = isSimpleDNF();
+            else isNDF = replaceDisjunction();
+        }
         return isNDF;
     }
 
     private void replaceInversion (){
-        int openedBracket;
-        int closedBracket;
+        int openedBracket = 0;
+        int closedBracket = 0;
+        String subInver;
         for(int i=0;i<expression.length();i++){
             Character character = expression.charAt(i);
             if(character.compareTo(NOT)==0){
                 openedBracket=i-1;
                 closedBracket = expression.indexOf(CLOSED,i)+1;
-                expression= expression.replace(expression.substring(openedBracket,closedBracket),"In");
-                i=-1;
+                subInver=expression.substring(openedBracket,closedBracket);
+                if(Validator.isBracketsCountCorrect(subInver)) {
+                    expression = expression.replace(subInver, "In");
+                    i = -1;
+                }
             }
         }
     }
@@ -65,11 +72,11 @@ public class ExpressionParser {
 
            if(character.compareTo(OPENED)==0){
                openedBracket=i;
-           } else if(character.compareTo(AND)==0&&expression.charAt(i+1)!='('){
+           } else if(character.compareTo(CLASH)==0&&expression.charAt(i+1)==BACKSLASH&&expression.charAt(i+2)!=OPENED){
 
                 closedBracket = expression.indexOf(CLOSED,i)+1;
                 String simpleConjunct = expression.substring(openedBracket,closedBracket);
-                if(isBinary(simpleConjunct,AND)) {
+                if(isBinary(simpleConjunct, CLASH)) {              //проверка на A/\B/\C
                     expression = expression.replace(simpleConjunct, "Co");
                     i=-1;
                 } else {
@@ -95,7 +102,7 @@ public class ExpressionParser {
 
 
 
-    private boolean isSimpleDNF(){
+    private boolean replaceDisjunction(){
 
         int openedBracket=0;
         int closedBracket;
@@ -105,10 +112,10 @@ public class ExpressionParser {
             Character character = expression.charAt(i);
             if(character.compareTo(OPENED)==0){
                 openedBracket=i;
-            } else if(character.compareTo(OR)==0&&expression.charAt(i+1)!='('){
+            } else if(character.compareTo(BACKSLASH)==0&&expression.charAt(i+1)==CLASH&&expression.charAt(i+2)!=OPENED){
                 closedBracket = expression.indexOf(CLOSED,i)+1;
                 String simpleConjunct = expression.substring(openedBracket,closedBracket);
-                if(isBinary(simpleConjunct,OR)) {
+                if(isBinary(simpleConjunct, BACKSLASH)) {
                     expression = expression.replace(simpleConjunct, "Dn");
                     i=-1;
                 } else {
@@ -119,20 +126,20 @@ public class ExpressionParser {
             }
         }
         if(isDNF)
-        return expression.compareTo("Dn")==0;
+        return expression.contains("Dn");
         else return false;
     }
 
 
 
-//    public static void main(String[] args) {
-//        try {
-//            System.out.println( new ExpressionParser("(((¬A)∧(B∧R))∨((A∧(¬D))∨(¬I)))").isDNF());
-//        } catch (BracketNumberException e) {
-//            e.printStackTrace();
-//        } catch (SymbolNotCorrectException e) {
-//            e.printStackTrace();
-//        }
-//    }
+    public static void main(String[] args) {
+        try {
+            System.out.println( new ExpressionParser("S").isDNF());
+        } catch (BracketNumberException e) {
+            e.printStackTrace();
+        } catch (SymbolNotCorrectException e) {
+            e.printStackTrace();
+        }
+    }
 
 }

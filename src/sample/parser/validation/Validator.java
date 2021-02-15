@@ -2,7 +2,7 @@ package sample.parser.validation;
 
 public class Validator {
 
-    private final static String SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01~∧∨()¬->";
+    private final static String SYMBOLS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ01~\\/()!->";
 
 
     public static boolean isSymbolsCorrect(String expression){

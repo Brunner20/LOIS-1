@@ -66,10 +66,10 @@ public class OperButtonPanel {
                 "-fx-pref-height: 50; " +
                 "-fx-font-size: 15");
 
-        gridPane.add(and,0,0,1,1);
-        gridPane.add(or,1,0,1,1);
-        gridPane.add(not,2,0,1,1);
-        gridPane.add(find,0,1,2,1);
+       // gridPane.add(and,0,0,1,1);
+       // gridPane.add(or,1,0,1,1);
+       // gridPane.add(not,2,0,1,1);
+        gridPane.add(find,0,0,1,1);
         GridPane.setMargin(or, new Insets(15));
         GridPane.setMargin(tru, new Insets(15));
 
@@ -94,7 +94,7 @@ public class OperButtonPanel {
         try {
             if(!new ExpressionParser(expRowTextField.getText()).isDNF()){
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setContentText("формула не является ДНФ");
+                alert.setContentText("формула НЕ является ДНФ");
                 alert.showAndWait();
             }else{
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
