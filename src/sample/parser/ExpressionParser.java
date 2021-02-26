@@ -25,8 +25,8 @@ public class ExpressionParser {
     public boolean isDNF() throws BracketNumberException, SymbolNotCorrectException {
 
         if(!Validator.isBracketsCountCorrect(expression))
-            isNDF=false;
-            //throw new BracketNumberException("не совпадает количество открывающих и закрывающих скобок");
+        {isNDF=false;
+            throw new BracketNumberException("не совпадает количество открывающих и закрывающих скобок");}
         if(!Validator.isSymbolsCorrect(expression))
             isNDF= false;
             //throw new SymbolNotCorrectException("некорректные символы");
@@ -38,8 +38,14 @@ public class ExpressionParser {
         {
             replaceInversion();
             if(expression.contains("!")||!replaceConjunct())
-             isNDF = false;
-            else isNDF = replaceDisjunction();
+            {
+                 isNDF = false;
+            }
+            else if(!expression.contains("/\\"))
+            {
+                isNDF = replaceDisjunction();
+            }
+            else isNDF = false;
         }
         return isNDF;
     }
@@ -74,15 +80,16 @@ public class ExpressionParser {
                openedBracket=i;
            } else if(character.compareTo(CLASH)==0&&expression.charAt(i+1)==BACKSLASH&&expression.charAt(i+2)!=OPENED){
 
-                closedBracket = expression.indexOf(CLOSED,i)+1;
-                String simpleConjunct = expression.substring(openedBracket,closedBracket);
-                if(isBinary(simpleConjunct, CLASH)) {              //проверка на A/\B/\C
-                    expression = expression.replace(simpleConjunct, "Co");
-                    i=-1;
-                } else {
-                    isCorrectConj = false;
-                    break;
-                }
+                   isCorrectConj = true;
+                   closedBracket = expression.indexOf(CLOSED,i)+1;
+                   String simpleConjunct = expression.substring(openedBracket,closedBracket);
+                   if(isBinary(simpleConjunct, CLASH)) {              //проверка на A/\B/\C
+                        expression = expression.replace(simpleConjunct, "Co");
+                        i=-1;
+                   } else {
+                        isCorrectConj = false;
+                        break;
+               }
             }
         }
         return isCorrectConj;
